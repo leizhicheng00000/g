@@ -101,14 +101,14 @@ hidden / protectedPage / hasSecretFields、密码与支付输入框，全部原�
 ## 四、构建流程（可复现）
 
 ```
-v141/
+scripts/
   dsh-go-1.4.1-arm64.apk        官方原包
   skeleton.apk                   只含 AndroidManifest + resources.arsc + res + classes.dex（4.2 MB）
   dec/                           apktool 反编译结果（8,239 个 smali）
   patch_blindspot_141.py         盲点补丁（A1 + 6 文案）
   classes.dex                    回编译后的补丁 dex（8,168,012 B）
   build_141.py                   出包（注入 manifest + 替换 dex/AXML + zipalign + 签名）
-  verify_141.py                  独立校验
+  build_final.py                 一次出两个旗舰包
 ```
 
 命令：
@@ -125,10 +125,10 @@ java -jar apktool.jar b dec --no-apk        # → dec/build/apk/classes.dex
 cp dec/build/apk/classes.dex classes.dex
 
 # 4. 出包
-python build_141.py
+python build_final.py
 
 # 5. 校验
-python verify_141.py
+node verify_patch.js
 ```
 
 用 `skeleton.apk` 而不是完整 233MB 包，反编译从十几分钟压到 25 秒，

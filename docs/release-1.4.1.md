@@ -138,7 +138,7 @@ patch 写失败时启动命令会退回到只加载原 overlay，App 仍能起�
 ## 复现
 
 ```bash
-cd E:/DSH-Go破甲手机端/v141
+cd scripts
 python build_final.py       # 出旗舰版两个包
 node verify_patch.js        # 用 dsh 同款 js-yaml + applyPatches 验 patch 结构
 ```
