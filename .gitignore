@@ -1,0 +1,12 @@
+# 构建输入 / 产物，不入库
+*.apk
+*.idsig
+*.apk.idsig
+rootfs.tar.xz
+extract/
+dec/
+dec141/
+build/
+*.log
+__pycache__/
+.venv/
