@@ -1,0 +1,75 @@
+{
+  "platform": "ios",
+  "upstream": {
+    "asset": "dsh-go-1.4.1-ios-unsigned.ipa",
+    "size": 129673089,
+    "sha256": "4ffe886d64735cdd940191c3a746e188d26ddbf83cc406497e7bcde0ef8ec162"
+  },
+  "package": {
+    "bundleId": "io.github.ccch1mneyyy.dshgo",
+    "displayName": "DSH Go",
+    "version": "1.4.1",
+    "build": "1",
+    "minOS": "15.0",
+    "urlScheme": "dshgo",
+    "entries": 463,
+    "frameworks": [
+      "App.framework",
+      "DshFlock.framework",
+      "DshGuest.framework",
+      "DshGuestBridge.framework",
+      "DshNodeHost.framework",
+      "DshRequireBuiltin.framework",
+      "Flutter.framework",
+      "NodeMobile.framework",
+      "SherpaOnnxC.framework",
+      "WebRTC.framework",
+      "objective_c.framework",
+      "sqlite3.framework"
+    ]
+  },
+  "runtime": {
+    "entry": "Payload/Runner.app/dsh-runtime/runtime.zip",
+    "size": 47854200,
+    "manifestEntries": 12659,
+    "schema": 1,
+    "dshVersion": "0.2.2-rc.1",
+    "nodeVersion": "24.22.1",
+    "runtimeVersion": "ios-fa9286ed3276c599fc2b47a4"
+  },
+  "preset": {
+    "path": "files/node_modules/@deepseek-ai/dsh-web-app/presets/standard.patch.yml",
+    "chars": 11348,
+    "bytes": 17598,
+    "sha256": "dcb1b78f729144eb968d2a9ba16d38f30b5a2d0eaedba10b4c7318cef53200a5",
+    "mode": "complete + prefix"
+  },
+  "outputs": [
+    {
+      "asset": "DSHGo-Flagship-1.4.1-ios-brand-noext.ipa",
+      "local": "DSH-Go-1.4.1-破甲+品牌-无扩展.ipa",
+      "size": 129420760,
+      "sha256": "cc4012cec3524405e80a33ac8e5c62e6dfd65a9e851ce4985ee7b834d86d0d32"
+    },
+    {
+      "asset": "DSHGo-Flagship-1.4.1-ios-brand.ipa",
+      "local": "DSH-Go-1.4.1-破甲+品牌.ipa",
+      "size": 129528493,
+      "sha256": "508026cd729a487d0ca46adbcd2aa9c5bd0f681e23e9cff3a819b5ad95cd7a27"
+    },
+    {
+      "asset": "DSHGo-Flagship-1.4.1-ios.ipa",
+      "local": "DSH-Go-1.4.1-破甲.ipa",
+      "size": 129653201,
+      "sha256": "d7184f5f0d9e1802228f80b4bfc5371c22275f774b7b7895389e86cde57781a2"
+    }
+  ],
+  "brand": {
+    "map": [
+      "ccch1mneyyy -> leizhicheng00000",
+      "dsh-go -> g"
+    ],
+    "residualCcch1mneyyy": 1,
+    "hitsLeizhicheng": 16
+  }
+}

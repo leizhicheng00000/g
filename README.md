@@ -1,10 +1,11 @@
 # DSH Go · 1.4.1 旗舰版
 
-> 系统层破甲 + 品牌替换 + 无障碍盲点，一次装完。
-> 基于上游 [ccch1mneyyy/dsh-Go](https://github.com/ccch1mneyyy/dsh-Go) **v1.4.1** 的非官方改造版，只发布改造说明与构建脚本，不重新分发上游源码。
+> 系统层破甲 + 品牌替换 + 无障碍盲点。Android / iOS / 鸿蒙三平台，同一套破甲点。
+> 基于上游 [ccch1mneyyy/dsh-Go](https://github.com/ccch1mneyyy/dsh-Go) **v1.4.1**（Android / iOS）与 **v1.4.0**（鸿蒙）的非官方改造版，只发布改造说明与构建脚本，不重新分发上游源码。
 
-![base](https://img.shields.io/badge/base-dsh--go%201.4.1-1f6feb)
-![abi](https://img.shields.io/badge/abi-arm64--v8a-2ea043)
+![base](https://img.shields.io/badge/base-dsh--go%201.4.1%20%2F%201.4.0--ohos-1f6feb)
+![platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20HarmonyOS-2ea043)
+![abi](https://img.shields.io/badge/abi-arm64-2ea043)
 ![license](https://img.shields.io/badge/license-AGPL--3.0-blue)
 ![qq](https://img.shields.io/badge/QQ%E7%BE%A4-1108636855-eb5757)
 
@@ -42,12 +43,23 @@ fc9e85b90126d9cdf9e5c748ba7405810a9f5ba08e423089b0d752bb767a76d7  DSHGo-Flagship
 
 iOS / 鸿蒙没有 `launch.argv` 这个通道 —— 启动命令写死在 Dart 快照里，`dsh web` 之后没有参数位。所以改成直接换 preset 本体，并在 manifest 里同步那一万两千多条逐文件哈希中的一条。
 
-- **iOS**：[Release v1.4.1](https://github.com/leizhicheng00000/g/releases/tag/v1.4.1) 里的 `DSHGo-Flagship-1.4.1-ios-*.ipa`
-- **鸿蒙**：[Release v1.4.0-ohos](https://github.com/leizhicheng00000/g/releases/tag/v1.4.0-ohos) 里的 `DSHGo-Flagship-1.4.0-ohos*.hap`
+| 平台 | 装哪个 | 大小 |
+|---|---|---|
+| iOS | **[DSHGo-Flagship-1.4.1-ios-brand-noext.ipa](https://github.com/leizhicheng00000/g/releases/download/v1.4.1/DSHGo-Flagship-1.4.1-ios-brand-noext.ipa)**（免费签名只占 1 个 App ID） | 129,420,760 B |
+| iOS | [DSHGo-Flagship-1.4.1-ios-brand.ipa](https://github.com/leizhicheng00000/g/releases/download/v1.4.1/DSHGo-Flagship-1.4.1-ios-brand.ipa)（保留分享扩展与小组件） | 129,528,493 B |
+| iOS | [DSHGo-Flagship-1.4.1-ios.ipa](https://github.com/leizhicheng00000/g/releases/download/v1.4.1/DSHGo-Flagship-1.4.1-ios.ipa)（只破甲） | 129,653,201 B |
+| 鸿蒙 | **[DSHGo-Flagship-1.4.0-ohos-brand.hap](https://github.com/leizhicheng00000/g/releases/download/v1.4.0-ohos/DSHGo-Flagship-1.4.0-ohos-brand.hap)** | 122,698,576 B |
+| 鸿蒙 | [DSHGo-Flagship-1.4.0-ohos.hap](https://github.com/leizhicheng00000/g/releases/download/v1.4.0-ohos/DSHGo-Flagship-1.4.0-ohos.hap)（只破甲） | 124,906,965 B |
 
-装哪个、怎么签、踩什么坑，见 **[docs/cross-platform.md](docs/cross-platform.md)**。
+两个平台各自的完整说明（运行时构成、包内结构、构建命令、验证方法、已知限制）：
+
+- **[platforms/ios/README.md](platforms/ios/README.md)** · 签名走 [docs/ios-signing.md](docs/ios-signing.md)
+- **[platforms/ohos/README.md](platforms/ohos/README.md)** · 签名走 [docs/ohos-signing.md](docs/ohos-signing.md)
+- 三平台对照总览：[platforms/README.md](platforms/README.md)
 
 一句话建议：**鸿蒙 4.x 及以下别用 HAP，直接装上面那个 APK** —— 兼容 APK，破甲更成熟，也不用折腾证书。只有 HarmonyOS NEXT（纯 ArkTS）才需要 HAP，而那要求华为开发者账号 + 设备 UDID 绑定。
+
+iOS 包是 **unsigned**，必须自签才能装。免费 Apple ID 7 天有效、同时限 3 个自签应用，所以优先用「无扩展」版。
 
 ---
 
@@ -247,24 +259,44 @@ node verify_patch.js      # 用 dsh 同款 js-yaml + 复刻 applyPatches 验证 
 
 ```
 scripts/
-  build_final.py            一次出包（入口）
+  build_final.py            一次出包（Android 入口）
   build_141.py              底层注入 + 组包
   build_v2.py               生成 --patch overlay YAML
   build_tier.py             早期方案（node 就地改 rootfs 里的 yml，保留作对照）
   brand_v2.py               品牌替换（so / community.json / 回执）
   patch_blindspot_141.py    无障碍盲点 smali 补丁
-  persona_system.md         破甲正篇（system prompt 全文）
+  persona_system.md         破甲正篇（system prompt 全文，三平台共用）
   persona_prefix.md         同上，较早的分段版
   persona_suffix.md         末检（order 10200）
   agents_clean.md           工作区约定（user 层）
   verify_patch.js           patch 语义验证
   keep/                     a31 补丁前后 smali 存档
+  cross/
+    zipraw.py               raw-copy zip 重写器（原样重建字节一致）
+    build_cross.py          iOS / 鸿蒙破甲构建
+    build_brand_cross.py    两平台品牌替换
+    build_ios_noext.py      iOS 去扩展（签名友好）
+    verify_cross.js         preset 语义校验
+    verify_release.py       成品校验（结构 + manifest 哈希 + 破甲标记）
+platforms/
+  README.md                 三平台对照总览
+  ios/README.md             iOS 版完整说明
+  ios/build-info.json       包标识、运行时、产物哈希
+  ios/standard.patch.yml    打完补丁的 preset（供 diff）
+  ios/preset.diff           upstream → patched 的 133 行 diff
+  ohos/README.md            鸿蒙版完整说明
+  ohos/build-info.json
+  ohos/standard.patch.yml
 docs/
   methodology.md            破甲方法论：从"绕过"到"授权"
   system-tier.md            系统级破甲说明
   release-1.4.1.md          本版发布说明
   upgrade-1.4.1.md          1.1.0 → 1.4.1 升级记录
+  cross-platform.md         三平台跨端说明
+  ios-signing.md            iOS 签名实操（Sideloadly / TrollStore / zsign）
+  ohos-signing.md           鸿蒙签名实操（DevEco / hap-sign-tool）
 legacy/                     1.0.x 时代脚本（包名改名 / AXML 池重建 / UrlFix）
+SHA256SUMS                  七个发布资产的完整哈希
 ```
 
 ---

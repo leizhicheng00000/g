@@ -1,0 +1,71 @@
+{
+  "platform": "ohos",
+  "upstream": {
+    "asset": "dsh-go-1.4.0-ohos-unsigned.hap",
+    "size": 125331075,
+    "sha256": "86cddc6f91cdcd158158d256aa5b8e0328f4ec5d74fa45cb573c9a17b8aac990"
+  },
+  "package": {
+    "bundleName": "ccchimneyyy.dsh.go",
+    "versionName": "1.4.0",
+    "versionCode": 1,
+    "minAPIVersion": 26,
+    "targetAPIVersion": 26,
+    "compileSdkVersion": "26.0.0.105",
+    "vendor": "ccch1mneyyy",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ],
+    "mainElement": "EntryAbility",
+    "entries": 305,
+    "nativeLibs": {
+      "libnode.so": 81661984,
+      "libc++_shared.so": 1262504,
+      "libdsh_require_builtin.so": 872472,
+      "libapp.so": 50250632,
+      "libdsh_flock.so": 9064,
+      "libflutter.so": 16866016,
+      "libdsh_host.so": 295128,
+      "libsqlite3.so": 1423016
+    }
+  },
+  "runtime": {
+    "entry": "resources/rawfile/dsh-runtime/runtime.zip",
+    "size": 47721389,
+    "manifestEntries": 12628,
+    "schema": 1,
+    "dshVersion": "0.2.2-rc.1",
+    "nodeVersion": "24.22.1",
+    "runtimeVersion": "ohos-010769bc4c0101b96d3b0469"
+  },
+  "preset": {
+    "path": "files/node_modules/@deepseek-ai/dsh-web-app/presets/standard.patch.yml",
+    "chars": 11348,
+    "bytes": 17598,
+    "sha256": "dcb1b78f729144eb968d2a9ba16d38f30b5a2d0eaedba10b4c7318cef53200a5",
+    "mode": "complete + prefix"
+  },
+  "outputs": [
+    {
+      "asset": "DSHGo-Flagship-1.4.0-ohos-brand.hap",
+      "local": "DSH-Go-1.4.0-破甲+品牌.hap",
+      "size": 122698576,
+      "sha256": "6f9f0494a99c6744e90030bf801dce67ab6b3f713f83935b288c81c1795230c7"
+    },
+    {
+      "asset": "DSHGo-Flagship-1.4.0-ohos.hap",
+      "local": "DSH-Go-1.4.0-破甲.hap",
+      "size": 124906965,
+      "sha256": "56c6d1436a5c2b375a36c2c21c39981bc19d328ad7b1180d35f6e6485e65c835"
+    }
+  ],
+  "brand": {
+    "map": [
+      "ccch1mneyyy -> leizhicheng00000",
+      "dsh-go -> g"
+    ],
+    "residualCcch1mneyyy": 0,
+    "hitsLeizhicheng": 16
+  }
+}

@@ -39,12 +39,25 @@ Android 的 `launch.argv` 是 52 项参数数组，`exec /usr/local/bin/dsh web`
 - 鸿蒙 `libapp.so` 16 处，残留 0 处
 - `community.json` 群号 `1108636855`，问题反馈指本仓库 Issues
 
+### 仓库结构
+
+两个平台各自成套，不再散落在 `cross/` 一个目录里：
+
+- `platforms/ios/`、`platforms/ohos/` —— 各自 README + `build-info.json` + 打完补丁的
+  `standard.patch.yml`，iOS 另有 `preset.diff`（upstream → patched，133 行）
+- `docs/ios-signing.md`、`docs/ohos-signing.md` —— 签名实操，含报错对照表
+- `scripts/cross/verify_release.py` —— 成品校验，结构 / manifest 哈希 / 破甲标记 / 品牌残留
+- 根目录 `SHA256SUMS` —— 七个发布资产的完整哈希
+
+二进制不进 git：单个 IPA / HAP 都超过 GitHub 的 100 MB 单文件硬限制，`git push` 会直接拒绝。
+二进制走 Releases。
+
 ### 限制
 
 - 鸿蒙只有 1.4.0（上游 1.4.1 没发 HAP，但更新日志里写了鸿蒙修复）
 - iOS 改过 `App.framework` 后，包内 `_CodeSignature/CodeResources` 失效，签名工具必须递归重签所有 framework
-- 单独提供「无扩展」版：去掉 `ShareExtension.appex` 与 `CompanionWidget.appex`，把免费签名的
-  App ID 需求从 3 个降到 1 个
+- 单独提供「无扩展」版：去掉 `ShareExtension.appex` 与 `CompanionWidget.appex`，把需要占用的
+  App ID 从 3 个降到 1 个
 
 ---
 
