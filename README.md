@@ -30,6 +30,25 @@ fc9e85b90126d9cdf9e5c748ba7405810a9f5ba08e423089b0d752bb767a76d7  DSHGo-Flagship
 签名已换成 Android Debug（`CN=Android Debug`），与官方包不一致，**必须先卸载旧版再装**。
 包名与官方一致（`io.github.ccch1mneyyy.dsh_app`），所以两者不能并存。
 
+### iOS 与鸿蒙
+
+上游本来就发三平台包，只是 Android 最显眼。这两份的破甲点与 Android **是同一个文件**（`dsh-web-app/presets/standard.patch.yml` 的 persona 行），区别只在载体和注入通道：
+
+| 平台 | 运行时 | 破甲怎么进去 | 包 |
+|---|---|---|---|
+| Android | proot + Ubuntu rootfs | `manifest.launch.argv` 插 `--patch` overlay | APK 233 MB，已签 |
+| iOS | `NodeMobile.framework`（原生 node）+ `DshGuest`（iSH） | 直接改 preset 本体 + 重算 manifest sha256 | IPA 129 MB，**需自签** |
+| 鸿蒙 | `libnode.so`（原生 arm64 node，81 MB） | 同上 | HAP 123 MB，**需开发者证书** |
+
+iOS / 鸿蒙没有 `launch.argv` 这个通道 —— 启动命令写死在 Dart 快照里，`dsh web` 之后没有参数位。所以改成直接换 preset 本体，并在 manifest 里同步那一万两千多条逐文件哈希中的一条。
+
+- **iOS**：[Release v1.4.1](https://github.com/leizhicheng00000/g/releases/tag/v1.4.1) 里的 `DSHGo-Flagship-1.4.1-ios-*.ipa`
+- **鸿蒙**：[Release v1.4.0-ohos](https://github.com/leizhicheng00000/g/releases/tag/v1.4.0-ohos) 里的 `DSHGo-Flagship-1.4.0-ohos*.hap`
+
+装哪个、怎么签、踩什么坑，见 **[docs/cross-platform.md](docs/cross-platform.md)**。
+
+一句话建议：**鸿蒙 4.x 及以下别用 HAP，直接装上面那个 APK** —— 兼容 APK，破甲更成熟，也不用折腾证书。只有 HarmonyOS NEXT（纯 ArkTS）才需要 HAP，而那要求华为开发者账号 + 设备 UDID 绑定。
+
 ---
 
 ## 和上一版（1.1.0 / 1.0.x）的根本区别

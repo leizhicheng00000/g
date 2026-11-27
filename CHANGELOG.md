@@ -1,5 +1,53 @@
 # 更新日志
 
+## 跨平台 · 2026-11-27（iOS / 鸿蒙）
+
+上游本来就发三平台包：v1.4.1 有 `dsh-go-1.4.1-ios-unsigned.ipa`，v1.4.0 还有
+`dsh-go-1.4.0-ohos-unsigned.hap`。这次把同一套破甲搬到另两个载体。
+
+### 三平台的运行时不是一回事
+
+| | Android | iOS | 鸿蒙 |
+|---|---|---|---|
+| node | rootfs 里的 node 24.22.1 | `NodeMobile.framework`（nodejs-mobile，原生 arm64） | `libnode.so`（原生 arm64，81 MB） |
+| shell 工具 | rootfs bash / git / rg | `DshGuest.framework`（iSH，用户态 x86 模拟） | 原生 Linux 层 |
+| 运行时包 | `rootfs-arm64-v8a.tar.xz` 155 MB | `dsh-runtime/runtime.zip` 48 MB | 同 iOS |
+| 清单 | 整包 `rootfsSha256` | 逐文件 sha256，12 659 条 | 逐文件 sha256，12 628 条 |
+| 注入通道 | `manifest.launch.argv` 插 `--patch` | 无 → 改 preset 本体 | 同 iOS |
+
+### 为什么注入方式不同
+
+Android 的 `launch.argv` 是 52 项参数数组，`exec /usr/local/bin/dsh web` 之后可以直接追加
+`--patch`。iOS 和鸿蒙的启动命令写死在 Dart 快照里（`App.framework/App` 里搜 `--patch` 命中 0 次，
+只有 `dsh web`），**没有参数位可插**。
+
+所以改成直接换 preset 本体，并在 manifest 里同步那条逐文件哈希。这两个平台的列表是
+**逐文件 sha256 + size**，改一个字节就得改账本，否则启动时校验失败。
+
+### 验证
+
+- `preset-standard` 的 sha256 三平台完全一致（`3006cc37…60afd`），确认同源
+- 改完后 manifest 全量重算：iOS 12 659 条、鸿蒙 12 628 条，异常 0
+- 用 dsh 同款 `js-yaml` 解析：`complete: true` 命中、22 项 plugins 齐全、正文逐字一致、3 个 `!!js` 存活
+- `zipraw.py` 原样重建后与原文件逐字节一致（做过单元验证）
+
+### 品牌
+
+与 Android 同一套等长映射。`ccch1mneyyy(11→16) +5`、`dsh-go(6→1) -5` 净变化 0。
+
+- iOS `App.framework/App` 16 处，残留 1 处（`io.github.ccch1mneyyy.dsh_app/remote_background`，Android 专属分支，故意保留）
+- 鸿蒙 `libapp.so` 16 处，残留 0 处
+- `community.json` 群号 `1108636855`，问题反馈指本仓库 Issues
+
+### 限制
+
+- 鸿蒙只有 1.4.0（上游 1.4.1 没发 HAP，但更新日志里写了鸿蒙修复）
+- iOS 改过 `App.framework` 后，包内 `_CodeSignature/CodeResources` 失效，签名工具必须递归重签所有 framework
+- 单独提供「无扩展」版：去掉 `ShareExtension.appex` 与 `CompanionWidget.appex`，把免费签名的
+  App ID 需求从 3 个降到 1 个
+
+---
+
 ## v1.4.1 · 2026-11-27
 
 上游基底：`dsh-go-1.4.1-arm64.apk`（233,442,996 B，SHA256 `6186f2f9…d1f209`）。
